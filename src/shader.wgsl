@@ -84,12 +84,12 @@ fn fs_main(@builtin(position) coord : vec4<f32>)
         let p = ro + rd * t;
         let n = getNormal(p);
 
-        let lightDir = normalize(vec3<f32>(-1.0, 1.0, -1.0));
+        let lightDir = normalize(vec3<f32>(-1.0, -1.0, 1.0));
         let diff = max(dot(n, lightDir), 0.0);
 
         return vec4<f32>(diff, diff, diff, 1.0);
     }
 
     // background
-    return vec4<f32>(0.1, 0.1, 0.15, 1.0);
+    return vec4<f32>(0.1, 0.2, 0.4, 1.0);
 }
