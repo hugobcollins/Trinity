@@ -1,6 +1,8 @@
 import shaderCode from "./shader.wgsl?raw";
 const canvas = document.getElementById("c") as HTMLCanvasElement;
 
+console.log(shaderCode);
+
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -12,7 +14,6 @@ function resizeCanvas() {
 }
 
 window.addEventListener("resize", resizeCanvas);
-
 
 if (!(canvas instanceof HTMLCanvasElement)) {
   throw new Error("Canvas not found");
@@ -34,8 +35,6 @@ context.configure({
   device,
   format,
 });
-
-console.log(shaderCode);
 
 resizeCanvas();
 
@@ -103,7 +102,7 @@ function frame() {
   });
   pass.setBindGroup(0, bindGroup);
   pass.setPipeline(pipeline);
-  pass.draw(3);
+  pass.draw(6);
   pass.end();
 
   device.queue.submit([encoder.finish()]);
