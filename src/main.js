@@ -265,7 +265,8 @@ function render(){
 function update(dt) {
     triangle.transform.rotation.z += dt;
     cube.transform.rotation.z += dt;
-    cube.transform.rotation.y += dt * 0.7
+    cube.transform.rotation.y += dt * 0.7;
+    cube.transform.position.z -= dt;
 }
 
 let previousTime = 0;
