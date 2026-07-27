@@ -1,5 +1,5 @@
 import Camera from "./Camera.js";
-import Mat3 from "../math/Mat3.js";
+import Mat4 from "../math/Mat4.js";
 
 export default class Renderer {
 
@@ -8,7 +8,7 @@ export default class Renderer {
         this.gl = gl;
         this.program = program;
         this.uniforms = uniforms;
-        this.camera = new Camera();
+        this.camera = null;
 
     }
 
@@ -30,39 +30,40 @@ export default class Renderer {
             1.0
         );
 
-        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.clear(
+            gl.COLOR_BUFFER_BIT |
+            gl.DEPTH_BUFFER_BIT
+        );
 
     }
 
-    draw(gameObject) {
+    draw(gameObject, view) {
 
         const gl = this.gl;
 
-        const model = gameObject.getModelMatrix();
-
-        //console.log(model.m);
-
-        const view = this.camera.getViewMatrix();
+        const model = gameObject.transform.getMatrix();
 
         const projection =
-            Mat3.orthographic(
-                gl.canvas.width,
-                gl.canvas.height
+            Mat4.perspective(
+                Math.PI / 3,
+                gl.canvas.width / gl.canvas.height,
+                0.1,
+                1000
             );
 
-        gl.uniformMatrix3fv(
+        gl.uniformMatrix4fv(
             this.uniforms.model,
             false,
             model.m
         );
 
-        gl.uniformMatrix3fv(
+        gl.uniformMatrix4fv(
             this.uniforms.view,
             false,
             view.m
         );
 
-        gl.uniformMatrix3fv(
+        gl.uniformMatrix4fv(
             this.uniforms.projection,
             false,
             projection.m
@@ -78,20 +79,16 @@ export default class Renderer {
 
     }
 
-    render(objects) {
+    render(scene) {
 
         const gl = this.gl;
-
         this.clear();
-
+        const view = scene.camera.getViewMatrix();
         gl.useProgram(this.program);
 
-        for (const object of objects) {
-
-            this.draw(object);
-
+        for (const object of scene.gameObjects) {
+            this.draw(object, view);
         }
-
     }
 
 }

@@ -4,6 +4,8 @@ import Mesh from "./graphics/Mesh.js";
 import GameObject from "./objects/GameObject.js";
 import Renderer from './graphics/Renderer.js';
 import Mat3 from './math/Mat3.js';
+import Scene from './objects/Scene.js';
+import Camera from './graphics/Camera.js';
 
 const canvas = document.querySelector("#c");
 
@@ -154,31 +156,116 @@ console.log(
 
 console.log(uniforms);
 
+gl.enable(gl.DEPTH_TEST);
+
+const scene = new Scene();
+const camera = new Camera();
+scene.camera = camera
+
+const cubeVertices = [
+
+    // Front (+Z)
+
+    -1,-1, 1,
+     1,-1, 1,
+     1, 1, 1,
+
+    -1,-1, 1,
+     1, 1, 1,
+    -1, 1, 1,
+
+    // Back (-Z)
+
+     1,-1,-1,
+    -1,-1,-1,
+    -1, 1,-1,
+
+     1,-1,-1,
+    -1, 1,-1,
+     1, 1,-1,
+
+    // Left
+
+    -1,-1,-1,
+    -1,-1, 1,
+    -1, 1, 1,
+
+    -1,-1,-1,
+    -1, 1, 1,
+    -1, 1,-1,
+
+    // Right
+
+     1,-1, 1,
+     1,-1,-1,
+     1, 1,-1,
+
+     1,-1, 1,
+     1, 1,-1,
+     1, 1, 1,
+
+    // Top
+
+    -1, 1, 1,
+     1, 1, 1,
+     1, 1,-1,
+
+    -1, 1, 1,
+     1, 1,-1,
+    -1, 1,-1,
+
+    // Bottom
+
+    -1,-1,-1,
+     1,-1,-1,
+     1,-1, 1,
+
+    -1,-1,-1,
+     1,-1, 1,
+    -1,-1, 1
+
+];
+
 const triangleMesh = new Mesh(gl, [
-    -33.3, -33.3,
-    -33.3,  66.7,
-     66.7, -33.3
+    -1, -1, 0,
+     0,  1, 0,
+     1, -1, 0
 ]);
+
+const cubeMesh = new Mesh(gl, cubeVertices);
 
 const triangle = new GameObject(triangleMesh);
 
-triangle.x = gl.canvas.width / 2;
-triangle.y = gl.canvas.height / 2;
-triangle.rotation = 0;
-triangle.scale = .5;
+const cube = new GameObject(cubeMesh);
+
+triangle.name = "Triangle";
+
+cube.name = "Cube"
+
+triangle.transform.position.set(0,0,-5);
+
+cube.transform.position.set(0, 0, -5);
+
+triangle.transform.scale.set(0.5,0.5,0.5);
+
+cube.transform.scale.set(1, 1, 1);
+
+//scene.add(triangle);
+
+scene.add(cube);
+
+const renderer = new Renderer(gl, program, uniforms)
 
 function render(){
 
-    const renderer = new Renderer(gl, program, uniforms)
-
-    renderer.render([
-        triangle
-    ]);
+    renderer.render(scene);
 
 }
 
-function update(dt){
-    triangle.rotation += dt;
+function update(dt) {
+    triangle.transform.rotation.z += dt;
+    cube.transform.rotation.z += dt;
+    cube.transform.rotation.y += dt * 0.7
 }
 
 let previousTime = 0;

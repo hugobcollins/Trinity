@@ -1,17 +1,14 @@
-import Mat3 from "../math/Mat3.js";
+import Transform from "./Transform.js";
 
 export default class GameObject {
 
-    constructor(mesh) {
+    constructor(mesh = null) {
+
+        this.name = "";
+
+        this.transform = new Transform();
 
         this.mesh = mesh;
-
-        this.x = 0;
-        this.y = 0;
-
-        this.rotation = 0;
-
-        this.scale = 1;
 
         this.color = [
             Math.random(),
@@ -19,14 +16,6 @@ export default class GameObject {
             Math.random(),
             1
         ];
-
-    }
-
-    getModelMatrix() {
-
-        return Mat3.translation(this.x, this.y)
-            .multiply(Mat3.rotation(this.rotation))
-            .multiply(Mat3.scale(this.scale, this.scale));
 
     }
 

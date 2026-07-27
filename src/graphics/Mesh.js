@@ -4,7 +4,7 @@ export default class Mesh {
 
         this.gl = gl;
 
-        this.vertexCount = vertices.length / 2;
+        this.vertexCount = vertices.length / 3;
 
         this.vao = gl.createVertexArray();
 
@@ -27,7 +27,7 @@ export default class Mesh {
 
         gl.vertexAttribPointer(
             0,
-            2,
+            3,
             gl.FLOAT,
             false,
             0,

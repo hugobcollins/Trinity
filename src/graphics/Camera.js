@@ -1,4 +1,4 @@
-import Mat3 from "../math/Mat3.js";
+import Mat4 from "../math/Mat4.js";
 
 export default class Camera {
 
@@ -13,10 +13,10 @@ export default class Camera {
 
     getViewMatrix() {
 
-        return Mat3
-            .rotation(-this.rotation)
+        return Mat4
+            .rotationZ(-this.rotation)
             .multiply(
-                Mat3.translation(-this.x, -this.y)
+                Mat4.translation(-this.x, -this.y, 0)
             );
 
     }
