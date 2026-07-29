@@ -1,14 +1,19 @@
 export default class Mesh {
 
-    constructor(gl, vertices) {
+    constructor(gl, vertices, indices = null) {
 
         this.gl = gl;
 
         this.vertexCount = vertices.length / 3;
 
+        this.indexCount = 0;
+
         this.vao = gl.createVertexArray();
 
         this.positionBuffer = gl.createBuffer();
+
+        this.indexBuffer = null;
+
 
         gl.bindVertexArray(this.vao);
 
@@ -33,6 +38,24 @@ export default class Mesh {
             0,
             0
         );
+
+        if (indices) {
+
+            this.indexBuffer = gl.createBuffer();
+            
+            gl.bindBuffer(
+                gl.ELEMENT_ARRAY_BUFFER,
+                this.indexBuffer
+            );
+
+            gl.bufferData(
+                gl.ELEMENT_ARRAY_BUFFER,
+                new Uint16Array(indices),
+                gl.STATIC_DRAW
+            );
+
+            this.indexCount = indices.length;
+        }
 
         gl.bindVertexArray(null);
 

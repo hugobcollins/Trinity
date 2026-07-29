@@ -163,67 +163,34 @@ const camera = new Camera();
 scene.camera = camera
 
 const cubeVertices = [
-
-    // Front (+Z)
-
+    -1,-1,-1,
+     1,-1,-1,
+     1, 1,-1,
+    -1, 1,-1,
     -1,-1, 1,
      1,-1, 1,
      1, 1, 1,
+    -1, 1, 1
+];
 
-    -1,-1, 1,
-     1, 1, 1,
-    -1, 1, 1,
+const cubeIndices = [
+    4,5,6,
+    4,6,7,
 
-    // Back (-Z)
+    1,0,3,
+    1,3,2,
 
-     1,-1,-1,
-    -1,-1,-1,
-    -1, 1,-1,
+    0,4,7,
+    0,7,3,
 
-     1,-1,-1,
-    -1, 1,-1,
-     1, 1,-1,
+    5,1,2,
+    5,2,6,
 
-    // Left
+    3,7,6,
+    3,6,2,
 
-    -1,-1,-1,
-    -1,-1, 1,
-    -1, 1, 1,
-
-    -1,-1,-1,
-    -1, 1, 1,
-    -1, 1,-1,
-
-    // Right
-
-     1,-1, 1,
-     1,-1,-1,
-     1, 1,-1,
-
-     1,-1, 1,
-     1, 1,-1,
-     1, 1, 1,
-
-    // Top
-
-    -1, 1, 1,
-     1, 1, 1,
-     1, 1,-1,
-
-    -1, 1, 1,
-     1, 1,-1,
-    -1, 1,-1,
-
-    // Bottom
-
-    -1,-1,-1,
-     1,-1,-1,
-     1,-1, 1,
-
-    -1,-1,-1,
-     1,-1, 1,
-    -1,-1, 1
-
+    0,1,5,
+    0,5,4
 ];
 
 const triangleMesh = new Mesh(gl, [
@@ -232,7 +199,7 @@ const triangleMesh = new Mesh(gl, [
      1, -1, 0
 ]);
 
-const cubeMesh = new Mesh(gl, cubeVertices);
+const cubeMesh = new Mesh(gl, cubeVertices, cubeIndices);
 
 const triangle = new GameObject(triangleMesh);
 

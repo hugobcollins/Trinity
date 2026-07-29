@@ -71,11 +71,20 @@ export default class Renderer {
 
         gameObject.mesh.bind(gl);
 
-        gl.drawArrays(
-            gl.TRIANGLES,
-            0,
-            gameObject.mesh.vertexCount
-        );
+        if (gameObject.mesh.indexBuffer) {
+            gl.drawElements(
+                gl.TRIANGLES,
+                gameObject.mesh.indexCount,
+                gl.UNSIGNED_SHORT,
+                0
+            );
+        } else {
+            gl.drawArrays(
+                gl.TRIANGLES,
+                0,
+                gameObject.mesh.vertexCount
+            );
+        }
 
     }
 
