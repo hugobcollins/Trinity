@@ -6,6 +6,8 @@ import Renderer from './graphics/Renderer.js';
 import Mat3 from './math/Mat3.js';
 import Scene from './objects/Scene.js';
 import Camera from './graphics/Camera.js';
+import { createCubeMeshData } from './graphics/primitives/Cube.js';
+import { createTriangleMeshData } from './graphics/primitives/Triangle.js';
 
 const canvas = document.querySelector("#c");
 
@@ -126,35 +128,9 @@ const buffers = {
 
 };
 
-const vao = gl.createVertexArray();
-
-gl.bindVertexArray(vao);
-
-gl.bindBuffer(
-    gl.ARRAY_BUFFER,
-    buffers.position
-);
-
-gl.enableVertexAttribArray(
-    attributes.position
-);
-
-gl.vertexAttribPointer(
-    attributes.position,
-    2,
-    gl.FLOAT,
-    false,
-    0,
-    0
-);
-
-gl.bindVertexArray(null);
-
 console.log(
     gl.getAttribLocation(program, "a_position")
 );
-
-console.log(uniforms);
 
 gl.enable(gl.DEPTH_TEST);
 
@@ -162,44 +138,9 @@ const scene = new Scene();
 const camera = new Camera();
 scene.camera = camera
 
-const cubeVertices = [
-    -1,-1,-1,
-     1,-1,-1,
-     1, 1,-1,
-    -1, 1,-1,
-    -1,-1, 1,
-     1,-1, 1,
-     1, 1, 1,
-    -1, 1, 1
-];
+const triangleMesh = new Mesh(gl, createTriangleMeshData());
 
-const cubeIndices = [
-    4,5,6,
-    4,6,7,
-
-    1,0,3,
-    1,3,2,
-
-    0,4,7,
-    0,7,3,
-
-    5,1,2,
-    5,2,6,
-
-    3,7,6,
-    3,6,2,
-
-    0,1,5,
-    0,5,4
-];
-
-const triangleMesh = new Mesh(gl, [
-    -1, -1, 0,
-     0,  1, 0,
-     1, -1, 0
-]);
-
-const cubeMesh = new Mesh(gl, cubeVertices, cubeIndices);
+const cubeMesh = new Mesh(gl, createCubeMeshData());
 
 const triangle = new GameObject(triangleMesh);
 
