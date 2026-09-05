@@ -11,7 +11,7 @@ export function createTriangleMeshData() {
     ];
 
     meshdata.indices = [
-        1,2,3
+        0, 1, 2
     ];
 
     return meshdata;

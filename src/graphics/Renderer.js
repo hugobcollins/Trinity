@@ -50,23 +50,21 @@ export default class Renderer {
                 0.1,
                 1000
             );
+        
+        var u_mvpmatrix = projection.multiply(view).multiply(model);
+
+        var u_mvmatrix = view.multiply(model);
 
         gl.uniformMatrix4fv(
-            this.uniforms.model,
+            this.uniforms.mvp,
             false,
-            model.m
+            u_mvpmatrix.m
         );
 
         gl.uniformMatrix4fv(
-            this.uniforms.view,
+            this.uniforms.mv,
             false,
-            view.m
-        );
-
-        gl.uniformMatrix4fv(
-            this.uniforms.projection,
-            false,
-            projection.m
+            u_mvmatrix.m
         );
 
         gameObject.mesh.bind(gl);
@@ -85,6 +83,8 @@ export default class Renderer {
                 gameObject.mesh.vertexCount
             );
         }
+
+        gameObject.mesh.unbind(gl);
 
     }
 

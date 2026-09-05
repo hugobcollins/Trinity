@@ -28,6 +28,8 @@ export default class Mesh {
             gl.STATIC_DRAW
         );
 
+        // Enable the vertex attribute a_position, which is hardcoded at location 0 in the vsh
+
         gl.enableVertexAttribArray(0);
 
         gl.vertexAttribPointer(
@@ -56,6 +58,10 @@ export default class Mesh {
 
     bind(gl) {
         gl.bindVertexArray(this.vao);
+    }
+
+    unbind(gl) {
+        gl.bindVertexArray(null);
     }
 
 }
