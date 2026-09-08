@@ -1,7 +1,7 @@
 #version 300 es
 
-uniform mat4 u_mvpmatrix;
 uniform mat4 u_mvmatrix;
+uniform mat4 u_mvpmatrix;
 
 layout(location = 0) in vec3 a_position;
 
