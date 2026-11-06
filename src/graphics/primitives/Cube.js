@@ -18,7 +18,7 @@ function addFace(mesh, positions, tangent) {
             position: positions[i],
             uv: uvs[i],
             tangent: tangent,
-            color: [1, 1, 1, 1]
+            color: [0, 0, 1, 1]
 
         });
 
@@ -35,7 +35,7 @@ export function createCubeMeshData() {
 
     const mesh = new MeshData();
 
-    const h = 0.5;
+    const h = 1;
 
     // Front
     addFace(mesh, [

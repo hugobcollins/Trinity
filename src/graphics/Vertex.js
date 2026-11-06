@@ -5,7 +5,7 @@ export default class Vertex {
         normal = [0, 0, 0],
         uv = [0, 0],
         tangent = [1, 0, 0],
-        color = [1, 1, 1, 1]
+        color = [0, 0, 1, 1]
     } = {}) {
 
         this.position = [...position];
