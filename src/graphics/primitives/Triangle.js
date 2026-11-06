@@ -14,6 +14,10 @@ export function createTriangleMeshData() {
         0, 1, 2
     ];
 
+    meshdata.normals = [
+        1, 2, 3
+    ]
+
     return meshdata;
 
 }

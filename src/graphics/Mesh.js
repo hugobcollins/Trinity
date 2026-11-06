@@ -1,46 +1,54 @@
 export default class Mesh {
 
-    constructor(gl, meshData) {
-
-        this.gl = gl;
-
-        this.vertexCount = meshData.positions.length / 3;
-
-        this.indexCount = meshData.indices.length;
+    constructor(gl, meshData, vertexLayout) {
 
         this.vao = gl.createVertexArray();
 
-        this.positionBuffer = gl.createBuffer();
-
+        this.vertexBuffer = gl.createBuffer();
         this.indexBuffer = gl.createBuffer();
 
+        this.indexCount = meshData.indices.length;
+
+        // Check that indices fit in Uint16.
+        for (const index of meshData.indices) {
+
+            if (!Number.isInteger(index) || index < 0 || index > 65535) {
+                throw new Error("Mesh contains an invalid or out-of-range index.");
+            }
+
+        }
+
+        // ---------------------------------
+        // Bind VAO
+        // ---------------------------------
 
         gl.bindVertexArray(this.vao);
 
+        // ---------------------------------
+        // Vertex buffer
+        // ---------------------------------
+
         gl.bindBuffer(
             gl.ARRAY_BUFFER,
-            this.positionBuffer
+            this.vertexBuffer
         );
 
+        // MeshData handles converting the vertices
+        // into the interleaved Float32Array.
         gl.bufferData(
             gl.ARRAY_BUFFER,
-            new Float32Array(meshData.positions),
+            meshData.interleave(),
             gl.STATIC_DRAW
         );
 
-        // Enable the vertex attribute a_position, which is hardcoded at location 0 in the vsh
+        // Configure vertex attributes.
+        // This configuration is stored in the VAO.
+        vertexLayout.apply();
 
-        gl.enableVertexAttribArray(0);
+        // ---------------------------------
+        // Index buffer
+        // ---------------------------------
 
-        gl.vertexAttribPointer(
-            0,
-            3,
-            gl.FLOAT,
-            false,
-            0,
-            0
-        );
-        
         gl.bindBuffer(
             gl.ELEMENT_ARRAY_BUFFER,
             this.indexBuffer
@@ -52,16 +60,33 @@ export default class Mesh {
             gl.STATIC_DRAW
         );
 
+        // ---------------------------------
+        // Cleanup
+        // ---------------------------------
+
         gl.bindVertexArray(null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
     }
 
     bind(gl) {
+
         gl.bindVertexArray(this.vao);
+
     }
 
     unbind(gl) {
+
         gl.bindVertexArray(null);
+
+    }
+
+    dispose(gl) {
+
+        gl.deleteVertexArray(this.vao);
+        gl.deleteBuffer(this.vertexBuffer);
+        gl.deleteBuffer(this.indexBuffer);
+
     }
 
 }

@@ -50,22 +50,61 @@ export default class Renderer {
                 0.1,
                 1000
             );
-    
 
-        var u_mvmatrix = view.multiply(model);
+        var u_model = model;
 
-        var u_mvpmatrix = projection.multiply(u_mvmatrix);
+        var u_view = view;
+
+        var u_projection = projection;
 
         gl.uniformMatrix4fv(
-            this.uniforms.mv,
+            this.uniforms.model,
             false,
-            u_mvmatrix.m
+            u_model.m
         );
 
         gl.uniformMatrix4fv(
-            this.uniforms.mvp,
+            this.uniforms.view,
             false,
-            u_mvpmatrix.m
+            u_view.m
+        );
+
+        gl.uniformMatrix4fv(
+            this.uniforms.projection,
+            false,
+            u_projection.m
+        );
+
+        gl.uniform3f(
+            this.uniforms.lightPosition,
+            2.0, 3.0, 2.0
+        );
+
+        gl.uniform3f(
+            this.uniforms.lightColor,
+            1.0, 1.0, 1.0
+        );
+
+        gl.uniform3f(
+            this.uniforms.cameraPosition,
+            this.camera.transform.position.x,
+            this.camera.transform.position.y,
+            this.camera.transform.position.z
+        );
+
+        gl.uniform1f(
+            this.uniforms.ambientStrength,
+            0.15
+        );
+
+        gl.uniform1f(
+            this.uniforms.specularStrength,
+            0.5
+        );
+
+        gl.uniform1f(
+            this.uniforms.shininess,
+            32.0
         );
 
         gameObject.mesh.bind(gl);
@@ -76,12 +115,6 @@ export default class Renderer {
                 gameObject.mesh.indexCount,
                 gl.UNSIGNED_SHORT,
                 0
-            );
-        } else {
-            gl.drawArrays(
-                gl.TRIANGLES,
-                0,
-                gameObject.mesh.vertexCount
             );
         }
 

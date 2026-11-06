@@ -1,40 +1,92 @@
-import MeshData from "../MeshData.js";
+import MeshData from "./../MeshData.js";
+
+function addFace(mesh, positions, tangent) {
+
+    const start = mesh.vertices.length;
+
+    const uvs = [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [0, 1]
+    ];
+
+    for (let i = 0; i < 4; i++) {
+
+        mesh.addVertex({
+
+            position: positions[i],
+            uv: uvs[i],
+            tangent: tangent,
+            color: [1, 1, 1, 1]
+
+        });
+
+    }
+
+    mesh.addTriangle(start, start + 1, start + 2);
+    mesh.addTriangle(start, start + 2, start + 3);
+
+}
+
+
 
 export function createCubeMeshData() {
 
-    const meshdata = new MeshData();
+    const mesh = new MeshData();
 
-    meshdata.positions = [
-       -1,-1,-1,
-        1,-1,-1,
-        1, 1,-1,
-       -1, 1,-1,
-       -1,-1, 1,
-        1,-1, 1,
-        1, 1, 1,
-       -1, 1, 1
-    ];
+    const h = 0.5;
 
-    meshdata.indices = [
-        4,5,6,
-        4,6,7,
-    
-        1,0,3,
-        1,3,2,
-    
-        0,4,7,
-        0,7,3,
-    
-        5,1,2,
-        5,2,6,
-    
-        3,7,6,
-        3,6,2,
-    
-        0,1,5,
-        0,5,4
-    ];
+    // Front
+    addFace(mesh, [
+        [-h, -h, h],
+        [h, -h, h],
+        [h, h, h],
+        [-h, h, h]
+    ], [1, 0, 0]);
 
-    return meshdata;
+    // Back
+    addFace(mesh, [
+        [h, -h, -h],
+        [-h, -h, -h],
+        [-h, h, -h],
+        [h, h, -h]
+    ], [-1, 0, 0]);
+
+    // Right
+    addFace(mesh, [
+        [h, -h, h],
+        [h, -h, -h],
+        [h, h, -h],
+        [h, h, h]
+    ], [0, 0, -1]);
+
+    // Left
+    addFace(mesh, [
+        [-h, -h, -h],
+        [-h, -h, h],
+        [-h, h, h],
+        [-h, h, -h]
+    ], [0, 0, 1]);
+
+    // Top
+    addFace(mesh, [
+        [-h, h, h],
+        [h, h, h],
+        [h, h, -h],
+        [-h, h, -h]
+    ], [1, 0, 0]);
+
+    // Bottom
+    addFace(mesh, [
+        [-h, -h, -h],
+        [h, -h, -h],
+        [h, -h, h],
+        [-h, -h, h]
+    ], [1, 0, 0]);
+
+    mesh.computeNormals();
+
+    return mesh;
 
 }

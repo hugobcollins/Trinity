@@ -5,6 +5,7 @@ import GameObject from "./objects/GameObject.js";
 import Renderer from './graphics/Renderer.js';
 import Scene from './objects/Scene.js';
 import Camera from './graphics/Camera.js';
+import VertexLayout from './graphics/VertexLayout.js'
 import { createCubeMeshData } from './graphics/primitives/Cube.js';
 import { createTriangleMeshData } from './graphics/primitives/Triangle.js';
 import { createDodecahedronMeshData } from './graphics/primitives/Dodecahedron.js';
@@ -96,15 +97,18 @@ const program = createProgram(
 
 const uniforms = {
 
-    mvp: gl.getUniformLocation(
-        program,
-        "u_mvpmatrix"
-    ),
+    model: gl.getUniformLocation(program, "u_model"),
+    view: gl.getUniformLocation(program, "u_view"),
+    projection: gl.getUniformLocation(program, "u_projection"),
 
-    mv: gl.getUniformLocation(
-        program,
-        "u_mvmatrix"
-    ),
+    lightPosition: gl.getUniformLocation(program, "u_lightPosition"),
+    lightColor: gl.getUniformLocation(program, "u_lightColor"),
+
+    cameraPosition: gl.getUniformLocation(program, "u_cameraPosition"),
+
+    ambientStrength: gl.getUniformLocation(program, "u_ambientStrength"),
+    specularStrength: gl.getUniformLocation(program, "u_specularStrength"),
+    shininess: gl.getUniformLocation(program, "u_shininess")
 
 };
 
@@ -114,39 +118,45 @@ const scene = new Scene();
 const camera = new Camera();
 scene.camera = camera
 
-const triangleMesh = new Mesh(gl, createTriangleMeshData());
+const vertexLayout = new VertexLayout(gl)
 
-const cubeMesh = new Mesh(gl, createCubeMeshData());
+//const triangleMesh = new Mesh(gl, createTriangleMeshData());
+
+const cubeMeshData = createCubeMeshData()
+
+cubeMeshData.computeNormals()
+
+const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
 //Gemini gave me the code for making a Dodecahdron, because who knows how to do that
 //Unfortunately, it tweaked out, and this is definitely not a dodecahedron
 //Just warning you
 
-const dodecahedronMesh = new Mesh(gl, createDodecahedronMeshData());
+//const dodecahedronMesh = new Mesh(gl, createDodecahedronMeshData());
 
-const triangle = new GameObject(triangleMesh);
+//const triangle = new GameObject(triangleMesh);
 
 const cube = new GameObject(cubeMesh);
 
-const dodecahedron = new GameObject(dodecahedronMesh);
+//const dodecahedron = new GameObject(dodecahedronMesh);
 
-triangle.name = "Triangle";
+//triangle.name = "Triangle";
 
 cube.name = "Cube";
 
-dodecahedron.name = "Dodecahedron";
+//dodecahedron.name = "Dodecahedron";
 
-triangle.transform.position.set(0,0,-5);
+//triangle.transform.position.set(0,0,-5);
 
 cube.transform.position.set(0, 0, -5);
 
-dodecahedron.transform.position.set(0, 0, -5);
+//dodecahedron.transform.position.set(0, 0, -5);
 
-triangle.transform.scale.set(0.5,0.5,0.5);
+//triangle.transform.scale.set(0.5,0.5,0.5);
 
 cube.transform.scale.set(1, 1, 1);
 
-dodecahedron.transform.scale.set(1, 1, 1);
+//dodecahedron.transform.scale.set(1, 1, 1);
 
 //scene.add(triangle);
 
@@ -155,6 +165,7 @@ scene.add(cube);
 //scene.add(dodecahedron);
 
 const renderer = new Renderer(gl, program, uniforms);
+renderer.camera = camera
 
 function render(){
 
@@ -163,12 +174,12 @@ function render(){
 }
 
 function update(dt) {
-    triangle.transform.rotation.z += dt;
+    //triangle.transform.rotation.z += dt;
     cube.transform.rotation.z += dt;
     cube.transform.rotation.y += dt * 0.7;
     cube.transform.position.z -= dt;
-    dodecahedron.transform.rotation.x += dt;
-    dodecahedron.transform.rotation.y += dt * 0.7;
+    //dodecahedron.transform.rotation.x += dt;
+    //dodecahedron.transform.rotation.y += dt * 0.7;
 }
 
 let previousTime = 0;

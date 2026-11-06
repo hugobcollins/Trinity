@@ -1,21 +1,49 @@
 export default class VertexLayout {
 
-    constructor(attributes) {
-        this.attributes = attributes;
+    constructor(gl) {
 
-        let stride = 0;
+        this.gl = gl;
 
-        for (const attribute of attributes) {
-            stride = Math.max(
-                stride,
-                attribute.offset + attribute.size * 4
-            );
-        }
+        // Every attribute is stored as floats.
+        this.attributes = [
 
-        this.stride = stride;
+            {
+                location: 0,
+                size: 3
+            },
+
+            {
+                location: 1,
+                size: 3
+            },
+
+            {
+                location: 2,
+                size: 2
+            },
+
+            {
+                location: 3,
+                size: 3
+            },
+
+            {
+                location: 4,
+                size: 4
+            }
+
+        ];
+
+        this.stride = 15 * Float32Array.BYTES_PER_ELEMENT;
+
     }
 
-    apply(gl) {
+    apply() {
+
+        const gl = this.gl;
+
+        let offset = 0;
+
         for (const attribute of this.attributes) {
 
             gl.enableVertexAttribArray(attribute.location);
@@ -23,11 +51,17 @@ export default class VertexLayout {
             gl.vertexAttribPointer(
                 attribute.location,
                 attribute.size,
-                attribute.type,
-                attribute.normalized,
+                gl.FLOAT,
+                false,
                 this.stride,
-                attribute.offset
+                offset
             );
+
+            offset +=
+                attribute.size * Float32Array.BYTES_PER_ELEMENT;
+
         }
+
     }
+
 }
