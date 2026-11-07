@@ -1,4 +1,5 @@
 import crateImage from "./assets/crate.png";
+import houli from './assets/houli.png'
 import Texture from "./graphics/TextureLoader.js";
 import vertexShaderSource from './shaders/shader.vsh?raw';
 import fragmentShaderSource from './shaders/shader.fsh?raw';
@@ -132,6 +133,8 @@ cubeMeshData.computeNormals()
 
 const crateTexture = new Texture(gl, crateImage);
 
+const HouliTexture = new Texture(gl, houli)
+
 const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
 //Gemini gave me the code for making a Dodecahdron, because who knows how to do that
@@ -144,11 +147,15 @@ const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
 const cube = new GameObject(cubeMesh, crateTexture);
 
+const houliCube = new GameObject(cubeMesh, HouliTexture)
+
 //const dodecahedron = new GameObject(dodecahedronMesh);
 
 //triangle.name = "Triangle";
 
 cube.name = "Cube";
+
+houliCube.name = "Houli!"
 
 //dodecahedron.name = "Dodecahedron";
 
@@ -156,17 +163,23 @@ cube.name = "Cube";
 
 cube.transform.position.set(0, 0, -5);
 
+houliCube.transform.position.set(-5, 2, -10)
+
 //dodecahedron.transform.position.set(0, 0, -5);
 
 //triangle.transform.scale.set(0.5,0.5,0.5);
 
 cube.transform.scale.set(1, 1, 1);
 
+houliCube.transform.scale.set(1, 1, 1)
+
 //dodecahedron.transform.scale.set(1, 1, 1);
 
 //scene.add(triangle);
 
 scene.add(cube);
+
+scene.add(houliCube)
 
 //scene.add(dodecahedron);
 
@@ -184,6 +197,7 @@ function update(dt) {
     cube.transform.rotation.z += dt;
     cube.transform.rotation.y += dt * 0.7;
     cube.transform.position.z -= dt;
+    houliCube.transform.rotation.y += dt;
     //dodecahedron.transform.rotation.x += dt;
     //dodecahedron.transform.rotation.y += dt * 0.7;
 }
