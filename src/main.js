@@ -1,3 +1,5 @@
+import crateImage from "./assets/crate.png";
+import Texture from "./graphics/TextureLoader.js";
 import vertexShaderSource from './shaders/shader.vsh?raw';
 import fragmentShaderSource from './shaders/shader.fsh?raw';
 import Mesh from "./graphics/Mesh.js";
@@ -108,7 +110,9 @@ const uniforms = {
 
     ambientStrength: gl.getUniformLocation(program, "u_ambientStrength"),
     specularStrength: gl.getUniformLocation(program, "u_specularStrength"),
-    shininess: gl.getUniformLocation(program, "u_shininess")
+    shininess: gl.getUniformLocation(program, "u_shininess"),
+
+    diffuseTexture: gl.getUniformLocation(program, "u_diffuseTexture")
 
 };
 
@@ -126,6 +130,8 @@ const cubeMeshData = createCubeMeshData()
 
 cubeMeshData.computeNormals()
 
+const crateTexture = new Texture(gl, crateImage);
+
 const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
 //Gemini gave me the code for making a Dodecahdron, because who knows how to do that
@@ -136,7 +142,7 @@ const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
 //const triangle = new GameObject(triangleMesh);
 
-const cube = new GameObject(cubeMesh);
+const cube = new GameObject(cubeMesh, crateTexture);
 
 //const dodecahedron = new GameObject(dodecahedronMesh);
 

@@ -6,10 +6,14 @@ precision highp float;
 in vec3 v_worldPosition;
 in vec3 v_normal;
 in vec4 v_color;
+in vec2 v_uv;
 
 // Light properties
 uniform vec3 u_lightPosition;
 uniform vec3 u_lightColor;
+
+//textures to load
+uniform sampler2D u_diffuseTexture;
 
 // Camera position
 uniform vec3 u_cameraPosition;
@@ -82,8 +86,12 @@ void main() {
 
     vec3 lighting = ambient + diffuse + specular;
 
-    vec3 finalColor = lighting * v_color.rgb;
+    vec4 texel = texture(u_diffuseTexture, v_uv);
 
-    fragColor = vec4(finalColor, v_color.a);
+    vec3 baseColor = texel.rgb * v_color.rgb;
+
+    vec3 finalColor = lighting * baseColor;
+
+    fragColor = vec4(finalColor, texel.a * v_color.a);
 
 }

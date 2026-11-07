@@ -2,7 +2,7 @@ import Transform from "./Transform.js";
 
 export default class GameObject {
 
-    constructor(mesh = null) {
+    constructor(mesh = null, texture = null) {
 
         this.name = "";
 
@@ -16,6 +16,8 @@ export default class GameObject {
             Math.random(),
             1
         ];
+
+        this.texture = texture
 
     }
 

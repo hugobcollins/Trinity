@@ -107,16 +107,21 @@ export default class Renderer {
             32.0
         );
 
+        gl.uniform1i(
+            this.uniforms.diffuseTexture,
+            0
+        );
+
+        gameObject.texture.bind(0);
+
         gameObject.mesh.bind(gl);
 
-        if (gameObject.mesh.indexBuffer) {
-            gl.drawElements(
-                gl.TRIANGLES,
-                gameObject.mesh.indexCount,
-                gl.UNSIGNED_SHORT,
-                0
-            );
-        }
+        gl.drawElements(
+            gl.TRIANGLES,
+            gameObject.mesh.indexCount,
+            gl.UNSIGNED_SHORT,
+            0
+        );
 
         gameObject.mesh.unbind(gl);
 

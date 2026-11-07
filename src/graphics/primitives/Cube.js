@@ -18,7 +18,7 @@ function addFace(mesh, positions, tangent) {
             position: positions[i],
             uv: uvs[i],
             tangent: tangent,
-            color: [0, 0, 1, 1]
+            color: [1, 1, 1, 1]
 
         });
 
