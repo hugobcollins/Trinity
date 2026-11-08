@@ -23,12 +23,7 @@ export default class Renderer {
             gl.canvas.height
         );
 
-        gl.clearColor(
-            0.17,
-            0.24,
-            0.31,
-            1.0
-        );
+        gl.clearColor(0.53, 0.81, 0.92, 1.0);
 
         gl.clear(
             gl.COLOR_BUFFER_BIT |
@@ -135,7 +130,7 @@ export default class Renderer {
         );
 
         this.clear();
-        
+
 
         for (const object of scene.gameObjects) {
             this.draw(object);
