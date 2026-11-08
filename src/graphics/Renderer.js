@@ -3,12 +3,12 @@ import Mat4 from "../math/Mat4.js";
 
 export default class Renderer {
 
-    constructor(gl, program, uniforms) {
+    constructor(gl, program, uniforms, camera) {
 
         this.gl = gl;
         this.program = program;
         this.uniforms = uniforms;
-        this.camera = null;
+        this.camera = camera;
 
     }
 
@@ -37,13 +37,40 @@ export default class Renderer {
 
     }
 
-    draw(gameObject, view) {
+    draw(gameObject) {
 
         const gl = this.gl;
 
-        const model = gameObject.transform.getMatrix();
+        const u_model = gameObject.transform.getMatrix();
 
-        const projection =
+        gl.uniformMatrix4fv(
+            this.uniforms.model,
+            false,
+            u_model.m
+        );
+
+        gameObject.texture.bind(0);
+
+        gameObject.mesh.bind(gl);
+
+        gl.drawElements(
+            gl.TRIANGLES,
+            gameObject.mesh.indexCount,
+            gl.UNSIGNED_SHORT,
+            0
+        );
+
+        gameObject.mesh.unbind(gl);
+
+    }
+
+    render(scene) {
+
+        const gl = this.gl;
+
+        gl.useProgram(this.program);
+
+        const u_projection =
             Mat4.perspective(
                 Math.PI / 3,
                 gl.canvas.width / gl.canvas.height,
@@ -51,17 +78,12 @@ export default class Renderer {
                 1000
             );
 
-        var u_model = model;
+        if (!scene.camera) {
+            console.error("Renderer error: 'scene' is undefined.");
+            return;
+        }
 
-        var u_view = view;
-
-        var u_projection = projection;
-
-        gl.uniformMatrix4fv(
-            this.uniforms.model,
-            false,
-            u_model.m
-        );
+        const u_view = scene.camera.getViewMatrix();
 
         gl.uniformMatrix4fv(
             this.uniforms.view,
@@ -112,30 +134,11 @@ export default class Renderer {
             0
         );
 
-        gameObject.texture.bind(0);
-
-        gameObject.mesh.bind(gl);
-
-        gl.drawElements(
-            gl.TRIANGLES,
-            gameObject.mesh.indexCount,
-            gl.UNSIGNED_SHORT,
-            0
-        );
-
-        gameObject.mesh.unbind(gl);
-
-    }
-
-    render(scene) {
-
-        const gl = this.gl;
         this.clear();
-        const view = scene.camera.getViewMatrix();
-        gl.useProgram(this.program);
+        
 
         for (const object of scene.gameObjects) {
-            this.draw(object, view);
+            this.draw(object);
         }
     }
 

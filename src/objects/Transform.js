@@ -3,11 +3,11 @@ import Mat4 from "../math/Mat4.js";
 
 export default class Transform {
 
-    constructor() {
+    constructor(position=[0, 0, 0], rotation=[0, 0, 0]) {
 
-        this.position = new Vec3();
+        this.position = new Vec3(...position);
 
-        this.rotation = new Vec3();
+        this.rotation = new Vec3(...rotation);
 
         this.scale = new Vec3(1, 1, 1);
 

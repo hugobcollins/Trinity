@@ -1,9 +1,9 @@
 export default class Scene {
 
-    constructor() {
+    constructor(camera) {
 
         this.gameObjects = [];
-        this.camera = null;
+        this.camera = camera;
         
     }
 
