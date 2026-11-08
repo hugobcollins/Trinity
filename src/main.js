@@ -179,7 +179,7 @@ houliCube.transform.scale.set(1, 1, 1)
 
 scene.add(cube);
 
-scene.add(houliCube)
+//scene.add(houliCube)
 
 //scene.add(dodecahedron);
 
