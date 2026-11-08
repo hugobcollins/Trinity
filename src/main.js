@@ -85,16 +85,16 @@ gameEngineOne.scene.add(ground)
 function update(dt) {
     //cube.transform.position.z -= dt;
     if (keys.ArrowUp) {
-        cube.transform.position.z -= dt
+        cube.transform.position.z -= dt * 5
     }
     if (keys.ArrowDown) {
-        cube.transform.position.z += dt
+        cube.transform.position.z += dt * 5
     }
     if (keys.ArrowLeft) {
-        cube.transform.position.x -= dt
+        cube.transform.position.x -= dt * 5
     }
     if (keys.ArrowRight) {
-        cube.transform.position.x += dt
+        cube.transform.position.x += dt * 5
     }
 }
 
