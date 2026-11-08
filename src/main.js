@@ -1,4 +1,5 @@
 import crateImage from "./assets/crate.png";
+import checkerboard from "./assets/checkerboard.png"
 import houli from './assets/houli.png'
 import Texture from "./graphics/TextureLoader.js";
 import vertexShaderSource from './shaders/shader.vsh?raw';
@@ -10,7 +11,7 @@ import Scene from './objects/Scene.js';
 import Camera from './graphics/Camera.js';
 import VertexLayout from './graphics/VertexLayout.js'
 import { createCubeMeshData } from './graphics/primitives/Cube.js';
-import { createTriangleMeshData } from './graphics/primitives/Triangle.js';
+import { createSquareMeshData } from './graphics/primitives/Square.js';
 import { createDodecahedronMeshData } from './graphics/primitives/Dodecahedron.js';
 
 const canvas = document.querySelector("#c");
@@ -121,67 +122,67 @@ gl.enable(gl.DEPTH_TEST);
 
 const scene = new Scene();
 const camera = new Camera();
+camera.transform.position.set(0, 5, 10)
+camera.transform.rotation.set(-.2, 0, 0)
 scene.camera = camera
 
+//make vertex layout
 const vertexLayout = new VertexLayout(gl)
 
-//const triangleMesh = new Mesh(gl, createTriangleMeshData());
+//make mesh data and compute normals
+const squareMeshData = createSquareMeshData()
+
+squareMeshData.computeNormals()
 
 const cubeMeshData = createCubeMeshData()
 
 cubeMeshData.computeNormals()
 
+//load textures
 const crateTexture = new Texture(gl, crateImage);
 
 const HouliTexture = new Texture(gl, houli)
 
+const CheckerTexture  = new Texture(gl, checkerboard)
+
+//make the meshes!!!
+const squareMesh = new Mesh(gl, squareMeshData, vertexLayout);
+
 const cubeMesh = new Mesh(gl, cubeMeshData, vertexLayout);
 
-//Gemini gave me the code for making a Dodecahdron, because who knows how to do that
-//Unfortunately, it tweaked out, and this is definitely not a dodecahedron
-//Just warning you
-
-//const dodecahedronMesh = new Mesh(gl, createDodecahedronMeshData());
-
-//const triangle = new GameObject(triangleMesh);
-
+//make objects
 const cube = new GameObject(cubeMesh, crateTexture);
 
-const houliCube = new GameObject(cubeMesh, HouliTexture)
+const houliCube = new GameObject(cubeMesh, HouliTexture);
 
-//const dodecahedron = new GameObject(dodecahedronMesh);
+const ground = new GameObject(squareMesh, CheckerTexture);
 
-//triangle.name = "Triangle";
-
+//name them
 cube.name = "Cube";
 
 houliCube.name = "Houli!"
 
-//dodecahedron.name = "Dodecahedron";
+ground.name = "Ground"
 
-//triangle.transform.position.set(0,0,-5);
-
+//set scale and starting position
 cube.transform.position.set(0, 0, -5);
 
 houliCube.transform.position.set(-5, 2, -10)
 
-//dodecahedron.transform.position.set(0, 0, -5);
-
-//triangle.transform.scale.set(0.5,0.5,0.5);
+ground.transform.position.set(0, -2, 0) 
 
 cube.transform.scale.set(1, 1, 1);
 
 houliCube.transform.scale.set(1, 1, 1)
 
-//dodecahedron.transform.scale.set(1, 1, 1);
+ground.transform.scale.set(20, 20, 20)
 
-//scene.add(triangle);
-
+//add them to the scene
 scene.add(cube);
 
 //scene.add(houliCube)
 
-//scene.add(dodecahedron);
+scene.add(ground)
 
 const renderer = new Renderer(gl, program, uniforms);
 renderer.camera = camera
@@ -194,12 +195,14 @@ function render(){
 
 function update(dt) {
     //triangle.transform.rotation.z += dt;
-    cube.transform.rotation.z += dt;
-    cube.transform.rotation.y += dt * 0.7;
-    cube.transform.position.z -= dt;
-    houliCube.transform.rotation.y += dt;
+    //cube.transform.rotation.z += dt;
+    //cube.transform.rotation.y += dt * 0.7;
+    //cube.transform.position.z -= dt;
+    //houliCube.transform.rotation.y += dt;
+    //ground.transform.rotation.x += dt;
     //dodecahedron.transform.rotation.x += dt;
     //dodecahedron.transform.rotation.y += dt * 0.7;
+    //camera.transform.rotation.x -= dt * .1;
 }
 
 let previousTime = 0;

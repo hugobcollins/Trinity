@@ -14,6 +14,9 @@ export default class Camera {
         return Mat4
             .rotationZ(-this.transform.rotation.z)
             .multiply(
+                Mat4.rotationX(-this.transform.rotation.x)
+            )
+            .multiply(
                 Mat4.translation(
                     -this.transform.position.x,
                     -this.transform.position.y,
