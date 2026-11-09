@@ -26,6 +26,25 @@ export default class GameObject {
 
         this.texture = texture
 
+        this.parent = null;
+
+        this.children = [];
+
+    }
+
+    addChild(child) {
+        child.parent = this;
+        this.children.push(child);
+    }
+
+    getWorldMatrix() {
+        const localMatrix = this.transform.getMatrix()
+
+        if (this.parent) {
+            return this.parent.getWorldMatrix().multiply(localMatrix);
+        }
+
+        return localMatrix;
     }
 
 }

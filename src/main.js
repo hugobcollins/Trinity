@@ -26,7 +26,11 @@ const keys = {
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false,
-    SpaceBar: false
+    SpaceBar: false,
+    A: false,
+    S: false,
+    D: false,
+    W: false,
 };
 
 // 2. Listen for keydown and keyup events
@@ -46,6 +50,12 @@ window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' || e.key === ' ') {
         keys.SpaceBar = true;
     }
+    if (e.code === 'A' || e.key === 'a') {
+        keys.A = true;
+    }
+    if (e.code === 'D' || e.key === 'd') {
+        keys.D = true;
+    }
 });
 
 window.addEventListener('keyup', (e) => {
@@ -60,6 +70,12 @@ window.addEventListener('keyup', (e) => {
     }
     if (e.code === 'ArrowRight' || e.key === 'ArrowRight') {
         keys.ArrowRight = false;
+    }
+    if (e.code === 'A' || e.key === 'a') {
+        keys.A = false;
+    }
+    if (e.code === 'D' || e.key === 'd') {
+        keys.D = false;
     }
 });
 
@@ -81,9 +97,14 @@ const houliCube = gameEngineOne.makeCube(HouliTexture, [1, 1, 1], [-5, 2, -10], 
 
 const ground = gameEngineOne.makeSquare(CheckerTexture, [100, 100, 100], [0, -1, 5], [0, 0, 0], "Ground")
 
+const child = gameEngineOne.makeCube(crateTexture, [1, 1, 1], [0, 0, -2], [0, 0, 0], "Child")
+
+cube.addChild(child)
+
 //add them to the scene
 gameEngineOne.scene.add(cube);
-gameEngineOne.scene.add(ground)
+gameEngineOne.scene.add(ground);
+gameEngineOne.scene.add(child)
 // gameEngineOne.scene.add(houliCube)
 
 function update(dt) {
@@ -108,10 +129,16 @@ function update(dt) {
         cube.acceleration.y = 10;
         keys.SpaceBar = false
     }
+    if (keys.A) {
+        cube.transform.rotation.y += 1 * dt;
+    }
+    if (keys.D) {
+        cube.transform.rotation.y -= 1 * dt;
+    }
 
-    if (cube.transform.position.y > 0){
+    if (cube.transform.position.y > 0) {
         cube.acceleration.y -= 10 * dt
-    } else if (cube.transform.position.y < 0){
+    } else if (cube.transform.position.y < 0) {
         cube.acceleration.y = 0;
         cube.velocity.y = 0;
         cube.transform.position.y = 0;
@@ -122,6 +149,15 @@ function update(dt) {
         gameObject.velocity.x += gameObject.acceleration.x * dt;
         gameObject.velocity.y += gameObject.acceleration.y * dt;
         gameObject.velocity.z += gameObject.acceleration.z * dt;
+        if (gameObject.name != "Ground") {
+            if (gameObject.transform.position.y > 0) {
+                gameObject.acceleration.y -= 10 * dt
+            } else if (gameObject.transform.position.y < 0) {
+                gameObject.acceleration.y = 0;
+                gameObject.velocity.y = 0;
+                gameObject.transform.position.y = 0;
+            }
+        }
 
         gameObject.transform.position.x += gameObject.velocity.x * dt;
         gameObject.transform.position.y += gameObject.velocity.y * dt;

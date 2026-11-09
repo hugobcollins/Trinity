@@ -36,7 +36,8 @@ export default class Renderer {
 
         const gl = this.gl;
 
-        const u_model = gameObject.transform.getMatrix();
+        const u_model = gameObject.getWorldMatrix();
+        // const u_model = gameObject.transform.getMatrix();
 
         gl.uniformMatrix4fv(
             this.uniforms.model,
