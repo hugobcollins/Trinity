@@ -79,7 +79,7 @@ const cube = gameEngineOne.makeCube(crateTexture, [1, 1, 1], [0, 2, -5], [0, 0, 
 
 const houliCube = gameEngineOne.makeCube(HouliTexture, [1, 1, 1], [-5, 2, -10], [0, 0, 0], "Houli")
 
-const ground = gameEngineOne.makeSquare(CheckerTexture, [25, 25, 25], [0, -1, 0], [0, 0, 0], "Ground")
+const ground = gameEngineOne.makeSquare(CheckerTexture, [100, 100, 100], [0, -1, 5], [0, 0, 0], "Ground")
 
 //add them to the scene
 gameEngineOne.scene.add(cube);
