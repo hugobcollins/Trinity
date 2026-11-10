@@ -97,7 +97,7 @@ const houliCube = gameEngineOne.makeCube(HouliTexture, [1, 1, 1], [-5, 2, -10], 
 
 const ground = gameEngineOne.makeSquare(CheckerTexture, [100, 100, 100], [0, -1, 5], [0, 0, 0], "Ground")
 
-const child = gameEngineOne.makeCube(crateTexture, [1, 1, 1], [0, 0, -2], [0, 0, 0], "Child")
+const child = gameEngineOne.makeCube(crateTexture, [1, 1, 1], [0, 0, -4], [0, 0, 0], "Child")
 
 cube.addChild(child)
 
@@ -130,9 +130,9 @@ function update(dt) {
         keys.SpaceBar = false
     }
     if (keys.A) {
-        cube.acceleration.rotation.y = -cube.accel.y;
-    } else if (keys.D) {
         cube.acceleration.rotation.y = cube.accel.y;
+    } else if (keys.D) {
+        cube.acceleration.rotation.y = -cube.accel.y;
     } else {
         cube.acceleration.rotation.y = 0;
         cube.velocity.rotation.y *= .98;
