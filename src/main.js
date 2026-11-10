@@ -110,58 +110,50 @@ gameEngineOne.scene.add(child)
 function update(dt) {
     //cube.transform.position.z -= dt;
     if (keys.ArrowUp) {
-        cube.acceleration.z = -cube.speed;
+        cube.acceleration.position.z = -cube.accel.x;
     } else if (keys.ArrowDown) {
-        cube.acceleration.z = cube.speed;
+        cube.acceleration.position.z = cube.accel.x;
     } else {
-        cube.acceleration.z = 0;
-        cube.velocity.z *= .98;
+        cube.acceleration.position.z = 0;
+        cube.velocity.position.z *= .98;
     }
     if (keys.ArrowLeft) {
-        cube.acceleration.x = -cube.speed;
+        cube.acceleration.position.x = -cube.accel.x;
     } else if (keys.ArrowRight) {
-        cube.acceleration.x = cube.speed;
+        cube.acceleration.position.x = cube.accel.x;
     } else {
-        cube.acceleration.x = 0;
-        cube.velocity.x *= .98;
+        cube.acceleration.position.x = 0;
+        cube.velocity.position.x *= .98;
     }
     if (keys.SpaceBar) {
-        cube.acceleration.y = 10;
+        cube.acceleration.position.y = 10;
         keys.SpaceBar = false
     }
     if (keys.A) {
-        cube.transform.rotation.y += 1 * dt;
-    }
-    if (keys.D) {
-        cube.transform.rotation.y -= 1 * dt;
-    }
-
-    if (cube.transform.position.y > 0) {
-        cube.acceleration.y -= 10 * dt
-    } else if (cube.transform.position.y < 0) {
-        cube.acceleration.y = 0;
-        cube.velocity.y = 0;
-        cube.transform.position.y = 0;
+        cube.acceleration.rotation.y = -cube.accel.y;
+    } else if (keys.D) {
+        cube.acceleration.rotation.y = cube.accel.y;
+    } else {
+        cube.acceleration.rotation.y = 0;
+        cube.velocity.rotation.y *= .98;
     }
 
     for (let i = 0; i < gameEngineOne.scene.gameObjects.length; i++) {
         const gameObject = gameEngineOne.scene.gameObjects[i]
-        gameObject.velocity.x += gameObject.acceleration.x * dt;
-        gameObject.velocity.y += gameObject.acceleration.y * dt;
-        gameObject.velocity.z += gameObject.acceleration.z * dt;
+        gameObject.velocity.position.add(gameObject.acceleration.position.clone().multiplyScalar(dt))
+        gameObject.velocity.rotation.add(gameObject.acceleration.rotation.clone().multiplyScalar(dt))
         if (gameObject.name != "Ground") {
             if (gameObject.transform.position.y > 0) {
-                gameObject.acceleration.y -= 10 * dt
+                gameObject.acceleration.position.y -= 10 * dt
             } else if (gameObject.transform.position.y < 0) {
-                gameObject.acceleration.y = 0;
-                gameObject.velocity.y = 0;
+                gameObject.acceleration.position.y = 0;
+                gameObject.velocity.position.y = 0;
                 gameObject.transform.position.y = 0;
             }
         }
 
-        gameObject.transform.position.x += gameObject.velocity.x * dt;
-        gameObject.transform.position.y += gameObject.velocity.y * dt;
-        gameObject.transform.position.z += gameObject.velocity.z * dt;
+        gameObject.transform.position.add(gameObject.velocity.position.clone().multiplyScalar(dt))
+        gameObject.transform.rotation.add(gameObject.velocity.rotation.clone().multiplyScalar(dt))
     }
 
 }
